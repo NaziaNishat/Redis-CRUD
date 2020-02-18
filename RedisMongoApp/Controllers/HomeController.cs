@@ -15,12 +15,14 @@ namespace RedisMongoApp.Controllers
     public class HomeController : ControllerBase
     {
         private IOperations operations;
+        private IRedisOperations redisOperations;
         private Counter counter;
 
 
-        public HomeController(IOperations ioperations)
+        public HomeController(IOperations iOperations,IRedisOperations iRedisOperations)
         {
-            operations = ioperations;
+            operations = iOperations;
+            redisOperations = iRedisOperations;
             //counter = counter.getInstance();
         }
 
@@ -34,9 +36,16 @@ namespace RedisMongoApp.Controllers
         [HttpGet("{id}")]
         public ActionResult<Menu> Get(string id)
         {
-            Menu menu = operations.get(id);
-            menu = operations.updateVisitor(menu, id);
+
+            Menu menu = redisOperations.get(id);
+
+            if (menu == null)
+            {
+                menu = operations.get(id);
+                menu = operations.updateVisitor(menu, id);
+            }
             return Ok(menu);
+
 
         }
 
@@ -45,6 +54,7 @@ namespace RedisMongoApp.Controllers
         public object Post([FromBody] Menu menu)
         {
             
+            //redisOperations.add(menu);
             operations.add(menu);
             return Ok(menu);
         }

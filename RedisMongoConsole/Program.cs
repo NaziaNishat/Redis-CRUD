@@ -8,7 +8,10 @@ using Hangfire.Logging;
 using Hangfire.Logging.LogProviders;
 using System.Threading.Tasks;
 using System.Threading;
+using Microsoft.Extensions.DependencyInjection;
+using RedisMongoApp.Interfaces;
 using RedisMongoApp.Models;
+using RedisMongoApp.Services;
 
 namespace RedisMongoConsole
 {
@@ -27,12 +30,29 @@ namespace RedisMongoConsole
             {25,0 }
         };
 
+        private static RedisService redisService;
         static readonly int TRIES_TILL_SUCCESS = 3;
         static HttpClient client = new HttpClient();
+
+        private static IRedisOperations service;
 
 
         static void Main(string[] args)
         {
+
+/*            var serviceProvider = new ServiceCollection()
+                .AddSingleton<IRedisOperations, RedisService>()
+                .BuildServiceProvider();
+
+            redisOperations = serviceProvider.GetService<IRedisOperations>();*/
+
+
+            var collection = new ServiceCollection();
+            collection.AddScoped<IRedisOperations,RedisService>();
+            var serviceProvider = collection.BuildServiceProvider();
+            service = serviceProvider.GetService<IRedisOperations>();
+
+
             client.BaseAddress =
                 new Uri("http://localhost:57276");
 
@@ -81,7 +101,8 @@ namespace RedisMongoConsole
                 //Console.WriteLine(numMenu.numVisit);
                 if (numMenu.numVisit > 1)
                 {
-                    Console.WriteLine("Save in Redis : "+numMenu.numVisit);
+                    service.add(numMenu);
+                    
                 }
             }
         }

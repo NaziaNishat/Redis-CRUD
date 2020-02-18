@@ -13,6 +13,9 @@ using Microsoft.Extensions.Options;
 using RedisMongoApp.Interfaces;
 using RedisMongoApp.Models;
 using RedisMongoApp.Services;
+using StackExchange.Redis.Extensions.Core.Abstractions;
+using StackExchange.Redis.Extensions.Core.Configuration;
+using StackExchange.Redis.Extensions.Core.Implementations;
 
 namespace RedisMongoApp
 {
@@ -40,6 +43,17 @@ namespace RedisMongoApp
 
 
             services.AddControllers();
+
+            //Redis Setup
+            var redisConfiguration = Configuration.GetSection("Redis").Get<RedisConfiguration>();
+            services.AddSingleton(redisConfiguration);
+            services.AddSingleton<IRedisCacheClient, RedisCacheClient>();
+            services.AddSingleton<IRedisCacheConnectionPoolManager, RedisCacheConnectionPoolManager>();
+            services.AddSingleton<IRedisDefaultCacheClient, RedisDefaultCacheClient>();
+            services.AddSingleton<StackExchange.Redis.Extensions.Core.ISerializer, StackExchange.Redis.Extensions.MsgPack.MsgPackObjectSerializer>();
+
+            services.AddSingleton<IRedisOperations, RedisService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
