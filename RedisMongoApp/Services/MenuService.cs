@@ -43,5 +43,13 @@ namespace RedisMongoApp.Services
             var menus = collection.Find(new BsonDocument());
             return menus.ToEnumerable();
         }
+
+        public Menu updateVisitor(Menu menu,string id)
+        {
+            var filter = Builders<Menu>.Filter.Eq("id", id);
+            menu.numVisit += 1;
+            collection.ReplaceOne(filter, menu);
+            return menu;
+        }
     }
 }

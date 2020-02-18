@@ -15,10 +15,13 @@ namespace RedisMongoApp.Controllers
     public class HomeController : ControllerBase
     {
         private IOperations operations;
+        private Counter counter;
+
 
         public HomeController(IOperations ioperations)
         {
             operations = ioperations;
+            //counter = counter.getInstance();
         }
 
         [HttpGet]
@@ -29,9 +32,11 @@ namespace RedisMongoApp.Controllers
 
         // GET api/values/5
         [HttpGet("{id}")]
-        public ActionResult<Menu> Get(int id)
+        public ActionResult<Menu> Get(string id)
         {
-            return Ok();
+            Menu menu = operations.get(id);
+            menu = operations.updateVisitor(menu, id);
+            return Ok(menu);
 
         }
 
