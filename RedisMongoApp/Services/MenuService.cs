@@ -38,6 +38,15 @@ namespace RedisMongoApp.Services
             return menu;
         }
 
+        public void delete(string id)
+        {
+            collection = database.GetCollection<Menu>("Menus");
+            var deleteFilter = Builders<Menu>.Filter.Eq("id", id);
+            var deletedBook = collection.Find(deleteFilter).FirstOrDefault();
+
+            collection.DeleteOne(deleteFilter);
+        }
+
         public IEnumerable getAll()
         {
             var menus = collection.Find(new BsonDocument());

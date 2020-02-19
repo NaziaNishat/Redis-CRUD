@@ -12,6 +12,8 @@
     <PackageReference Include="MongoDB.Driver" Version="2.10.2" />
 	
 	<PackageReference Include="StackExchange.Redis" Version="2.0.601" />
+	
+	<PackageReference Include="StackExchange.Redis.Extensions.AspNetCore" Version="5.5.0" />
     <PackageReference Include="StackExchange.Redis.Extensions.Core" Version="5.5.0" />
     <PackageReference Include="StackExchange.Redis.Extensions.MsgPack" Version="5.5.0" />
   </ItemGroup>

@@ -58,5 +58,13 @@ namespace RedisMongoApp.Controllers
             operations.add(menu);
             return Ok(menu);
         }
+
+        // DELETE api/redis/5
+        [HttpDelete("{key}")]
+        public ActionResult Delete(string key)
+        {
+            operations.delete(key);
+            return Ok("Menu Deleted");
+        }
     }
 }
