@@ -11,7 +11,8 @@ namespace RedisMongoApp.Interfaces
     {
         void add(Menu menu);
         Menu get(string id);
+        void delete(string id);
         Menu updateVisitor(Menu menu, string id);
-        IEnumerable getAll();
+        IEnumerable<Menu> getAll();
     }
 }

@@ -26,6 +26,7 @@ namespace RedisMongoApp.Services
 
         public void add(Menu menu)
         {
+            menu.dbName = "MongoDB";
             collection.InsertOne(menu);
         }
 

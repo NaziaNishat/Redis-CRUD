@@ -11,5 +11,6 @@ namespace RedisMongoApp.Models
 
         public string item { get; set; }
         public int numVisit { get; set; }
+        public string dbName { get; set; }
     }
 }

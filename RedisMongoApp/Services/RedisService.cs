@@ -21,24 +21,41 @@ namespace RedisMongoApp.Services
 
         public void add(Menu menu)
         {
+            menu.dbName = "Redis";
             _redis.Db0.Add(menu.id, menu, DateTimeOffset.Now.AddMinutes(1000));
         }
 
         public Menu get(string id)
         { 
             var menu = _redis.Db0.Get<Menu>(id);
-            Console.WriteLine("Redissssssssss");
+            if (menu != null)
+            {
+                updateVisitor(menu, id);
+
+            }
             return menu;
         }
 
-        public IEnumerable getAll()
+        public void delete(string key)
         {
-            throw new NotImplementedException();
+            var result = _redis.Db0.Remove(key);
         }
 
-        public Menu updateVisitor(Menu menu, string id)
+        public IEnumerable<Menu> getAll()
         {
-            throw new NotImplementedException();
+            var menus = _redis.Db0.GetAll<Menu>(new string[] { "*" });
+            return menus.Values.ToList();
+        }
+
+        public Menu updateVisitor(Menu menu, string key)
+        {
+            var result = _redis.Db0.Get<Menu>(key);
+
+            result.numVisit += 1;
+            _redis.Db0.Add(key, result);
+
+            return result;
+
         }
     }
 }

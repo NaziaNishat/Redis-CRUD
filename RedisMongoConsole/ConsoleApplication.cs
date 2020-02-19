@@ -18,17 +18,11 @@ namespace RedisMongoConsole
 {
     class ConsoleApplication
     {
-        //private static IRedisOperations redisOperations;
-        private readonly IRedisCacheClient redisCacheClient;
 
         private static IRedisOperations redisOperations;
 
         static HttpClient client = new HttpClient();
 
-        private static RedisService redisService;
-
-/*        private static IRedisOperations service;
-*/
         public ConsoleApplication(IRedisOperations iRedisOperations)
         {
             redisOperations = iRedisOperations;
@@ -86,17 +80,18 @@ namespace RedisMongoConsole
         public static void check()
         {
             List<Menu> menus = getMenu();
-            for (int i = 0; i < menus.Count; i++)
-            {
-                var numMenu = menus[i];
-                //Console.WriteLine(numMenu.numVisit);
-                if (numMenu.numVisit > 3)
-                {
-                    Console.WriteLine("Hello!");
-                    redisOperations.add(numMenu);
 
+                for (int i = 0; i < menus.Count; i++)
+                {
+                    var numMenu = menus[i];
+                    //Console.WriteLine(numMenu.numVisit);
+                    if (numMenu != null && numMenu.numVisit > 3)
+                    {
+                        redisOperations.add(numMenu);
+
+                    }
                 }
-            }
+            
         }
 
         public static List<Menu> getMenu()

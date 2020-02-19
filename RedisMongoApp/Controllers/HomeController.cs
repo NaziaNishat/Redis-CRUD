@@ -32,6 +32,12 @@ namespace RedisMongoApp.Controllers
             return Ok(operations.getAll());
         }
 
+/*        [HttpGet("/Redis")]
+        public ActionResult<IEnumerable<Menu>> GetAllRedis()
+        {
+            return Ok(redisOperations.getAll());
+        }*/
+
         // GET api/values/5
         [HttpGet("{id}")]
         public ActionResult<Menu> Get(string id)
@@ -42,7 +48,10 @@ namespace RedisMongoApp.Controllers
             if (menu == null)
             {
                 menu = operations.get(id);
-                menu = operations.updateVisitor(menu, id);
+                if (menu != null)
+                {
+                    menu = operations.updateVisitor(menu, id);
+                }
             }
             return Ok(menu);
 
@@ -63,6 +72,7 @@ namespace RedisMongoApp.Controllers
         [HttpDelete("{key}")]
         public ActionResult Delete(string key)
         {
+            redisOperations.delete(key);
             operations.delete(key);
             return Ok("Menu Deleted");
         }
