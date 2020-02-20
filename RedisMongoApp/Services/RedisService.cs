@@ -38,7 +38,15 @@ namespace RedisMongoApp.Services
 
         public void delete(string key)
         {
-            var result = _redis.Db0.Remove(key);
+            try
+            {
+                var result = _redis.Db0.Remove(key);
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
         }
 
         public IEnumerable<Menu> getAll()
