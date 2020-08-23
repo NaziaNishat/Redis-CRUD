@@ -25,7 +25,7 @@ namespace RedisMongoIntegrationTest
         [Fact]
         public async Task GetAll_Returns_Empty()
         {
-            var httpResponse = await client.GetAsync("http://localhost:65200/home/");
+            var httpResponse = await client.GetAsync("home");
             httpResponse.StatusCode.Should().Be(HttpStatusCode.OK);
             //(await httpResponse.Content.ReadAsAsync<List<Menu>>()).Should().BeEmpty();
         }
@@ -36,7 +36,29 @@ namespace RedisMongoIntegrationTest
 
             using (var client = new HomeControllerTest().client)
             {
-                var response = await client.PostAsync("http://localhost:65200/home/"
+                var response = await client.PostAsync("home"
+                    , new StringContent(
+                        JsonConvert.SerializeObject(new Menu()
+                        {
+                            id = "11",
+                            item = "kabab"
+                        }),
+                        Encoding.UTF8,
+                        "application/json"));
+
+                response.EnsureSuccessStatusCode();
+
+                response.StatusCode.Should().Be(HttpStatusCode.OK);
+            }
+        }
+
+        [Fact]
+        public async Task Post_WithoutBody_Shows_Error()
+        {
+
+            using (var client = new HomeControllerTest().client)
+            {
+                var response = await client.PostAsync("home"
                     , new StringContent(
                         JsonConvert.SerializeObject(new Menu()
                         {

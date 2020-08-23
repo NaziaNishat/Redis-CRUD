@@ -16,14 +16,12 @@ namespace RedisMongoApp.Controllers
     {
         private IOperations operations;
         private IRedisOperations redisOperations;
-        private Counter counter;
 
 
         public HomeController(IOperations iOperations,IRedisOperations iRedisOperations)
         {
             operations = iOperations;
             redisOperations = iRedisOperations;
-            //counter = counter.getInstance();
         }
 
         [HttpGet]
@@ -32,13 +30,8 @@ namespace RedisMongoApp.Controllers
             return Ok(operations.getAll());
         }
 
-/*        [HttpGet("/Redis")]
-        public ActionResult<IEnumerable<Menu>> GetAllRedis()
-        {
-            return Ok(redisOperations.getAll());
-        }*/
 
-        // GET api/values/5
+        // GET [controller]/5
         [HttpGet("{id}")]
         public ActionResult<Menu> Get(string id)
         {
@@ -58,7 +51,7 @@ namespace RedisMongoApp.Controllers
 
         }
 
-        // POST api/values
+        // POST [controller]
         [HttpPost]
         public object Post([FromBody] Menu menu)
         {
@@ -68,7 +61,7 @@ namespace RedisMongoApp.Controllers
             return Ok(menu);
         }
 
-        // DELETE api/redis/5
+        // DELETE [controller]/5
         [HttpDelete("{key}")]
         public ActionResult Delete(string key)
         {
